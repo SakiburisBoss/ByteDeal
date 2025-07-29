@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import Header from "@/components/layout/header";
+import { Inter } from "next/font/google";
+import HeaderCategorySelector from "@/components/layout/category-selector";
+import Cart from "@/components/cart/cart";
+import { SanityLive } from "@/sanity/lib/live";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,12 +22,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={`${inter.className} antialiased `}
+        >
+          <Header categorySelector={<HeaderCategorySelector/>}/>
+          {children}
+          <Cart/>
+          <SanityLive/>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
