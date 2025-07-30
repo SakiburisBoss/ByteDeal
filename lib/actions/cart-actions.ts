@@ -3,8 +3,9 @@ import prisma from "@/lib/prisma";
 import { Product } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import { currentUser } from "@clerk/nextjs/server";
+import { CartLineItem } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-
+import { CartItem } from "@/stores/cart-store";
 
 export const createCart = async () => {
     const user = await currentUser();
@@ -104,7 +105,7 @@ export const updateCartItem = async (
     }
 
     const existingItem = cart.items.find(
-        (item) => item.sanityProductId === sanityProductId
+        (item: CartItem) => item.sanityProductId === sanityProductId
     );
 
     try {
