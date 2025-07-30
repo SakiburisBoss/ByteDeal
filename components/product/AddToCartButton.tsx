@@ -35,6 +35,7 @@ const AddToCartButton = ({ product }: AddToCartButtonProps) => {
       price: product.price,
       image: urlFor(product.image).url(),
       quantity: 1,
+      sanityProductId: product._id, // Use the product ID as the Sanity reference
     });
 
     // Analytics tracking removed as per user request

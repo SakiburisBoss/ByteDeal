@@ -3,6 +3,7 @@ import { createClient } from "next-sanity";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { CartItem } from "@/stores/cart-store";
 
 export async function POST(req: Request) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -115,7 +116,7 @@ export async function POST(req: Request) {
             postal_code: session.shipping_details?.address?.postal_code,
             country: session.shipping_details?.address?.country,
           },
-          OrderItems: cart.items.map((item) => ({
+          OrderItems: cart.items.map((item: CartItem) => ({
             _type: "orderItem",
             _key: item.id,
             product: {

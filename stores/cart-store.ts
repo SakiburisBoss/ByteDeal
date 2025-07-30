@@ -12,6 +12,7 @@ export type CartItem = {
   price: number;
   quantity: number;
   image: string;
+  sanityProductId: string; // Reference to the product in Sanity
 };
 
 type CartStore = {
