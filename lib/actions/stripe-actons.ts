@@ -16,7 +16,7 @@ export const createCheckoutSession = async (cartId: string) => {
   }
 
   // Validate all items before proceeding
-  const validItems = cart.items.filter(item => {
+  const validItems = cart.items.filter((item: { title: string; price: number; quantity: number }) => {
     if (!item.title || typeof item.title !== 'string' || item.title.trim() === '') {
       console.error('Invalid item title in cart:', item);
       return false;
