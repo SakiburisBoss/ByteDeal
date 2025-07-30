@@ -41,9 +41,21 @@ export const createCheckoutSession = async (cartId: string) => {
     0
   );
 
+  interface LineItem {
+    price_data: {
+      currency: string;
+      product_data: {
+        name: string;
+        images: string[];
+      };
+      unit_amount: number;
+    };
+    quantity: number;
+  }
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
-    line_items: validItems.map((item) => ({
+    line_items: validItems.map((item: { title: string; image?: string; price: number; quantity: number }): LineItem => ({
       price_data: {
         currency: "usd",
         product_data: {
