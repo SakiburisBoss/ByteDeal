@@ -1,9 +1,12 @@
 import sharp from 'sharp';
 import { promises as fs } from 'fs';
-import { join } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { execSync } from 'child_process';
 
-
+// Get the current module's directory in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const sizes = [16, 32, 48, 57, 60, 70, 72, 76, 96, 114, 120, 128, 144, 150, 152, 167, 180, 192, 256, 310, 384, 512];
 const publicDir = join(__dirname, '../public');
@@ -11,12 +14,12 @@ const inputSvg = join(publicDir, 'logo.svg');
 const manifestPath = join(publicDir, 'site.webmanifest');
 
 // Ensure output directory exists
-async function ensureDir(dir) {
+async function ensureDir(dir: string): Promise<void> {
   try {
     await fs.mkdir(dir, { recursive: true });
     console.log(`Created directory: ${dir}`);
   } catch (err) {
-    if (err.code !== 'EEXIST') {
+    if ((err as NodeJS.ErrnoException).code !== 'EEXIST') {
       console.error(`Error creating directory: ${err}`);
       throw err;
     }
@@ -24,7 +27,7 @@ async function ensureDir(dir) {
 }
 
 // Generate PNG icons with optimization
-async function generateIcons() {
+async function generateIcons(): Promise<void> {
   console.log('Starting favicon generation...');
   
   // Verify input SVG exists
@@ -40,8 +43,8 @@ async function generateIcons() {
   await sharp(inputSvg)
     .resize(64, 64)
     .png({ quality: 100 })
-    .toFile(path.join(publicDir, 'favicon.ico'))
-    .catch(err => {
+    .toFile(join(publicDir, 'favicon.ico'))
+    .catch((err: Error) => {
       console.error('Error generating favicon.ico:', err);
       throw err;
     });
@@ -58,8 +61,8 @@ async function generateIcons() {
     await sharp(inputSvg)
       .resize(size, size)
       .png({ quality: 80, compressionLevel: 9 })
-      .toFile(path.join(publicDir, sizeName))
-      .catch(err => {
+      .toFile(join(publicDir, sizeName))
+      .catch((err: Error) => {
         console.error(`Error generating ${sizeName}:`, err);
         throw err;
       });
@@ -76,8 +79,8 @@ async function generateIcons() {
     await sharp(inputSvg)
       .resize(icon.size, icon.size)
       .png({ quality: 80, compressionLevel: 9 })
-      .toFile(path.join(publicDir, icon.name))
-      .catch(err => {
+      .toFile(join(publicDir, icon.name))
+      .catch((err: Error) => {
         console.error(`Error generating ${icon.name}:`, err);
         throw err;
       });
@@ -115,8 +118,6 @@ async function generateIcons() {
     console.error('Error updating manifest:', err);
     throw err;
   }
-
-  console.log('Favicon generation completed successfully!');
 }
 
 // Create browserconfig.xml
@@ -147,7 +148,7 @@ const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 </urlset>`;
 
 // Install sharp if not already installed
-async function ensureSharp() {
+async function ensureSharp(): Promise<void> {
   try {
     sharp();
   } catch {
@@ -157,16 +158,16 @@ async function ensureSharp() {
 }
 
 // Main execution
-async function main() {
+async function main(): Promise<void> {
   try {
     await ensureDir(publicDir);
     await ensureSharp();
     await generateIcons();
     
     // Write additional files
-    await fs.writeFile(path.join(publicDir, 'browserconfig.xml'), browserConfig);
-    await fs.writeFile(path.join(publicDir, 'robots.txt'), robotsTxt);
-    await fs.writeFile(path.join(publicDir, 'sitemap.xml'), sitemapXml);
+    await fs.writeFile(join(publicDir, 'browserconfig.xml'), browserConfig);
+    await fs.writeFile(join(publicDir, 'robots.txt'), robotsTxt);
+    await fs.writeFile(join(publicDir, 'sitemap.xml'), sitemapXml);
     
     console.log('All files generated successfully!');
   } catch (error) {
