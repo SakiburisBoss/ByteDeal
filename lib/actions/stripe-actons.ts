@@ -36,8 +36,8 @@ export const createCheckoutSession = async (cartId: string) => {
     throw new Error("No valid items in cart");
   }
 
-  const totalPrice = validItems.reduce<number>(
-    (total: number, item: { price: number; quantity: number }) => total + (item.price * item.quantity),
+  const totalPrice = validItems.reduce(
+    (total: number, item: { price: number; quantity: number }): number => total + (item.price * item.quantity),
     0
   );
 
