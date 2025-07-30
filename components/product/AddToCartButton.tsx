@@ -11,9 +11,8 @@ type AddToCartButtonProps = {
   product: Product;
 };
 const AddToCartButton = ({ product }: AddToCartButtonProps) => {
-  const { cartId, addItem, open } = useCartStore(
+  const { addItem, open } = useCartStore(
     useShallow((state) => ({
-      cartId: state.cartId,
       addItem: state.addItem,
       open: state.open,
     }))
@@ -38,26 +37,7 @@ const AddToCartButton = ({ product }: AddToCartButtonProps) => {
       quantity: 1,
     });
 
-    try {
-      // Extend the Window interface to include umami
-      interface WindowWithUmami extends Window {
-        umami?: {
-          track: (event: string, data: Record<string, unknown>) => void;
-        };
-      }
-
-      const safeWindow = window as unknown as WindowWithUmami;
-
-      if (safeWindow.umami) {
-        safeWindow.umami.track("add_to_cart", {
-          cartId: cartId,
-          productId: product._id,
-          productName: product.title,
-          price: product.price,
-          currency: "USD",
-        });
-      }
-    } catch {}
+    // Analytics tracking removed as per user request
 
     setLoading(false);
     open();

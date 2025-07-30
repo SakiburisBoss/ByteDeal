@@ -51,18 +51,29 @@ const Cart = () => {
     return Math.max(0, freeShippingAmount - totalPrice);
   }, [totalPrice]);
 
-  const [lodingProceed,setLoadingProceed] = useState<boolean>(false)
+  const [loadingProceed, setLoadingProceed] = useState<boolean>(false);
 
   const handleCheckout = async () => {
-    if(!cartId || lodingProceed) {
+    if (!cartId || loadingProceed) {
       return;
     }
-    setLoadingProceed(true);
-   const checkoutUrl = await createCheckoutSession(cartId)
-   if(checkoutUrl) {
-    window.location.href = checkoutUrl;
-   }
-   setLoadingProceed(false);
+
+    try {
+      setLoadingProceed(true);
+      const checkoutUrl = await createCheckoutSession(cartId);
+
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
+      } else {
+        console.error("Failed to create checkout session");
+        // Consider adding user feedback here
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      // Consider adding user feedback here
+    } finally {
+      setLoadingProceed(false);
+    }
   };
 
   return (
@@ -81,21 +92,21 @@ const Cart = () => {
       >
         <div className="flex flex-col h-full">
           {/* Cart Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 transition-colors duration-200">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
+              <div className="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg transition-colors duration-200">
                 <ShoppingCart className="w-5 h-5 text-gray-900 dark:text-white" />
               </div>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Your Cart
               </h2>
-              <span className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200 px-3 py-1 rounded-full text-sm font-medium">
+              <span className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200 px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200">
                 {getTotalItems()} {getTotalItems() === 1 ? "item" : "items"}
               </span>
             </div>
             <button
               onClick={close}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all duration-200 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all duration-200 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white dark:focus:ring-offset-gray-900"
               aria-label="Close cart"
             >
               <X className="w-5 h-5" />
@@ -106,7 +117,7 @@ const Cart = () => {
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
             {items.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full p-6 text-center">
-                <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
+                <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6 transition-colors duration-200">
                   <ShoppingCart className="w-10 h-10 text-gray-400" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
@@ -118,7 +129,7 @@ const Cart = () => {
                 <Link
                   href="/"
                   onClick={close}
-                  className="bg-black hover:bg-gray-900 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
+                  className="bg-black hover:bg-gray-900 text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white dark:focus:ring-offset-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
                 >
                   Continue Shopping
                 </Link>
@@ -128,7 +139,7 @@ const Cart = () => {
                 {items.map((item) => (
                   <div
                     key={"cart-item-" + item.id}
-                    className="flex gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-xl transition-colors"
+                    className="flex gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-xl transition-all duration-200 hover:shadow-sm dark:hover:shadow-gray-800/20"
                   >
                     <div className="relative w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border border-gray-200 dark:border-gray-700">
                       <Image
@@ -152,7 +163,8 @@ const Cart = () => {
                           onChange={(e) =>
                             updateQuantity(item.id, Number(e.target.value))
                           }
-                          className="border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2 focus:outline-none transition-shadow"
+                          className="border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2 focus:outline-none transition-shadow hover:border-gray-300 dark:hover:border-gray-600 focus:border-black dark:focus:border-white"
+                          aria-label={`Quantity for ${item.title}`}
                         >
                           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                             <option
@@ -166,7 +178,8 @@ const Cart = () => {
                         </select>
                         <button
                           onClick={() => removeItem(item.id)}
-                          className="text-sm text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors font-medium"
+                          className="text-sm text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-200 transition-colors font-medium px-2 py-1 rounded-md hover:bg-red-50 dark:hover:bg-red-900/30"
+                          aria-label={`Remove ${item.title} from cart`}
                         >
                           Remove
                         </button>
@@ -191,11 +204,12 @@ const Cart = () => {
                       shipping
                     </span>
                   </div>
-                  <div className="w-full bg-blue-200 dark:bg-blue-800/50 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-blue-200 dark:bg-blue-800/50 rounded-full h-2 overflow-hidden transition-colors duration-200">
                     <div
-                      className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-300"
+                      className="bg-blue-600 dark:bg-blue-400 h-2 rounded-full transition-all duration-700 ease-out"
                       style={{
                         width: `${Math.min(100, (totalPrice / freeShippingAmount) * 100)}%`,
+                        transitionProperty: "width, background-color",
                       }}
                     />
                   </div>
@@ -244,10 +258,13 @@ const Cart = () => {
                     </span>
                   </div>
 
-                  <button className="w-full bg-black hover:bg-gray-900 text-white py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] focus:ring-2 focus:ring-offset-2 focus:ring-black dark:focus:ring-white dark:focus:ring-offset-gray-900 focus:outline-none"
-                  onClick={handleCheckout}
-                  disabled={lodingProceed}>
-                    {lodingProceed ? "Processing..." : "Proceed to Checkout"}
+                  <button
+                    className="w-full bg-black hover:bg-gray-900 text-white py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] focus:ring-2 focus:ring-offset-2 focus:ring-black dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:focus:ring-white dark:focus:ring-offset-gray-900 focus:outline-none disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                    onClick={handleCheckout}
+                    disabled={loadingProceed || items.length === 0}
+                    aria-busy={loadingProceed}
+                  >
+                    {loadingProceed ? "Processing..." : "Proceed to Checkout"}
                   </button>
 
                   <div className="space-y-3 pt-2">
