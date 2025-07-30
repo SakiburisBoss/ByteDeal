@@ -90,6 +90,13 @@ export const useCartStore = create<CartStore>()(
           }
 
           // If this is a completely new item, add it to the cart
+          if (!cartId) {
+            const newCart = await getOrCreateCart();
+            if (!newCart?.id) throw new Error('Failed to create cart');
+            set({ cartId: newCart.id });
+            cartId = newCart.id;
+          }
+          
           const updatedCart = await updateCartItem(cartId, item.id, {
             title: item.title,
             price: item.price,
