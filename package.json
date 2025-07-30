@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-favicons": "ts-node scripts/generate-favicons.ts",
+    "generate-favicons": "npx tsx scripts/generate-favicons.ts",
     "postinstall": "npm run generate-favicons"
   },
   "dependencies": {
@@ -44,6 +44,7 @@
     "sharp": "^0.33.3",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "tw-animate-css": "^1.3.6",
     "typescript": "^5.8.3"
   }
