@@ -3,7 +3,7 @@
 import {
   addWinningItemToCart,
   getOrCreateCart,
-} from "@/lib/actions/cart-actions";
+} from "@/actions/cart-actions";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Product } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";

@@ -1,7 +1,7 @@
 "use server";
 
 
-import { getOrCreateCart } from '@/lib/actions/cart-actions';
+import { getOrCreateCart } from '@/actions/cart-actions';
 import Stripe from 'stripe';
 import { currentUser } from "@clerk/nextjs/server";
 

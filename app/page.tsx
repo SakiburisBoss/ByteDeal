@@ -1,7 +1,7 @@
 import SalesCampaignBanner from "@/components/layout/sales-campaign-banner";
 import WheelOfFortune from "@/components/layout/wheel-of-fortune";
 import ProductGrid from "@/components/product/product-grid";
-import { getWheelOfFortuneConfiguration } from "@/lib/actions/wheel-of-fortune-actions";
+import { getWheelOfFortuneConfiguration } from "@/actions/wheel-of-fortune-actions";
 import { getAllProducts } from "@/sanity/lib/query";
 
 const Home = async () => {

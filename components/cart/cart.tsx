@@ -1,6 +1,6 @@
 "use client";
 
-import { createCheckoutSession } from "@/lib/actions/stripe-actons";
+import { createCheckoutSession } from "@/actions/stripe-actons";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/stores/cart-store";
 import { ShoppingCart, X } from "lucide-react";

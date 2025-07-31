@@ -2,7 +2,7 @@ import {
   getOrCreateCart,
   syncCartWithUser,
   updateCartItem,
-} from "@/lib/actions/cart-actions";
+} from "@/actions/cart-actions";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
