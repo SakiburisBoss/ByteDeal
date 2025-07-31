@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import { Product } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import { currentUser } from "@clerk/nextjs/server";
+import { CartLineItem } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export const createCart = async () => {
@@ -179,7 +180,7 @@ export const syncCartWithUser = async (cartId: string | null) => {
     }
 
     for(const item of existingAnonymousCart.items) {
-        const existingItem = existingUserCart.items.find((item) => item.sanityProductId === item.sanityProductId);
+        const existingItem = existingUserCart.items.find((item:CartLineItem) => item.sanityProductId === item.sanityProductId);
 
         if(existingItem) {
             // add two cart quantities together
