@@ -29,7 +29,7 @@ const HeaderSearchBar = () => {
     }, []);
 
     return (
-        <form onSubmit={handleSubmit} className="relative">
+        <form onSubmit={handleSubmit} className="relative m-2">
             <div className="relative">
                 <div className='absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none'>
                     <svg 
@@ -55,7 +55,7 @@ const HeaderSearchBar = () => {
                     onChange={(e) => setQuery(e.target.value)}
 
                     placeholder='Search...'
-                    className='w-32 pl-8 pr-2 py-1 text-sm border border-gray-200 dark:border-gray-700 rounded-md 
+                    className='w-28 pl-8 pr-2 py-1 text-sm border border-gray-200 dark:border-gray-700 rounded-md 
                              focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors
                              bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500'
                     aria-label='Search products'
