@@ -60,7 +60,7 @@ const HeaderClient = ({ categorySelector }: HeaderClientProps) => {
 
         <div className="w-full flex justify-between items-center py-3 sm:py-4 bg-white/80 dark:bg-gray-950/80 shadow-sm border-b border-gray-100 dark:border-gray-800 backdrop-blur-sm">
           <div className="flex justify-between items-center w-full px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
-            {/* Left section - Menu and Navigation */}
+            {/* Left section - Menu and Logo on mobile */}
             <div className="flex items-center gap-4 sm:gap-6">
               <button
                 className="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white md:hidden"
@@ -82,6 +82,15 @@ const HeaderClient = ({ categorySelector }: HeaderClientProps) => {
                 </svg>
               </button>
 
+              {/* Logo - Visible on mobile */}
+              <Link
+                href="/"
+                className="md:hidden text-2xl font-bold text-gray-900 dark:text-white"
+              >
+                ByteDeal
+              </Link>
+
+              {/* Navigation - Hidden on mobile */}
               <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-sm font-medium">
                 {categorySelector}
                 <Link
@@ -99,8 +108,8 @@ const HeaderClient = ({ categorySelector }: HeaderClientProps) => {
               </nav>
             </div>
 
-            {/* Center section - Logo */}
-            <div className="absolute left-1/2 transform -translate-x-1/2">
+            {/* Center section - Logo - Hidden on mobile, visible on md and up */}
+            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2">
               <Link
                 href="/"
                 className="text-2xl font-bold text-gray-900 dark:text-white"
@@ -111,9 +120,9 @@ const HeaderClient = ({ categorySelector }: HeaderClientProps) => {
 
             {/* Right section - Search, Account, Cart */}
             <div className="flex items-center gap-4 sm:gap-6">
-              <div className="hidden md:block">
+             
                 <HeaderSearchBar />
-              </div>
+             
 
               <div className="flex items-center gap-2 sm:gap-4">
                 <SignedIn>
@@ -121,22 +130,7 @@ const HeaderClient = ({ categorySelector }: HeaderClientProps) => {
                 </SignedIn>
                 <SignedOut>
                   <SignInButton mode="modal">
-                    <button className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-                    </button>
+                    <button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 dark:from-indigo-700 dark:to-purple-800 dark:hover:from-indigo-800 dark:hover:to-purple-900 text-white px-4 py-2 rounded-full font-medium transition-colors duration-200">Sign In</button>
                   </SignInButton>
                 </SignedOut>
 

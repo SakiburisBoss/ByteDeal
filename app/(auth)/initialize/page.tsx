@@ -3,10 +3,10 @@ import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-const initialize = async ({searchParams}: {searchParams: Promise<{redirect_url: string}>}) => {
+const initialize = async ({ searchParams }: { searchParams: Promise<{ redirect_url?: string }> }) => {
   const user = await currentUser();
   if (!user) {
-    redirect("/sign-in");
+    return redirect("/sign-in");
   }
     
   try {
@@ -27,9 +27,13 @@ const initialize = async ({searchParams}: {searchParams: Promise<{redirect_url: 
     });
   } catch (error) {
     console.error('Error initializing user:', error);
+    // Don't block the flow if there's an error
   }
 
-  redirect((await searchParams).redirect_url);
+  // Safely handle redirect with a default fallback
+  const params = await searchParams;
+  const redirectUrl = params?.redirect_url || "/";
+  return redirect(redirectUrl);
 };
 
 export default initialize;
