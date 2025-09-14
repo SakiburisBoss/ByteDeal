@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import Cart from "@/components/cart/cart";
 import { SanityLive } from "@/sanity/lib/live";
 import Header from "@/components/layout/Header";
+import IframeHandshake from "@/components/IframeHandshake";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -65,6 +66,7 @@ export default function RootLayout({
         <body className={`${inter.className} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200`}>
           <Header />
           <main className="min-h-[calc(100vh-200px)]">
+            <IframeHandshake />
             {children}
           </main>
           <Cart />
